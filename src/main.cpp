@@ -2,7 +2,10 @@
 #include <cmath>
 #include <iostream>
 
-unsigned int FibIter(unsigned int n) {
+unsigned long int recursive_fib_count = 0;
+unsigned long long int iterative_fib_count = 0;
+
+unsigned int iterative_fib(unsigned int n) {
   unsigned int i = 1, k, F = 0;
   for (k = 1; k <= n; k++) {
     F += i;
@@ -11,29 +14,21 @@ unsigned int FibIter(unsigned int n) {
   return F;
 }
 
-void iterative_fib() {
-  unsigned int i = 1, k, count = 0;
-  unsigned long long int a = 0, b = 1;
-
-  std::cout << "Function is executing..." << std::endl;
+void call_iterative_fib(int seconds) {
   std::chrono::steady_clock::time_point start =
       std::chrono::steady_clock::now();
 
-  std::chrono::steady_clock::time_point end = start + std::chrono::seconds(120);
+  std::chrono::steady_clock::time_point end =
+      start + std::chrono::seconds(seconds);
+
+  int ith_fib = 1;
 
   while (std::chrono::steady_clock::now() < end) {
-    unsigned long long int next = a + b;
-    a = b;
-    b = next;
-
-    count++;
+    iterative_fib(ith_fib);
+    ith_fib++;
+    iterative_fib_count++;
   }
-
-  std::cout << count << std::endl;
-  std::cout << "Function execution complete." << std::endl;
 }
-
-unsigned long long int fibCount = 0;
 
 unsigned long long int
 fibonacciWithTimeLimit(int n, std::chrono::steady_clock::time_point end) {
@@ -57,21 +52,23 @@ void recursive_fib_with_time_limit(int seconds) {
   unsigned int n = 1;
   while (fibonacciWithTimeLimit(n, end) != 0) {
     n++;
-    fibCount++;
+    recursive_fib_count++;
   }
 }
 
 int main() {
-  int executionTimeInSeconds = 5;
 
-  // iterative_fib();
+  for (int s = 15; s <= 120; s += 15) {
 
-  recursive_fib_with_time_limit(10);
+    recursive_fib_with_time_limit(s);
+    call_iterative_fib(s);
 
-  // std::cout << "Execution stopped after " << executionTimeInSeconds
-  //           << " seconds." << std::endl;
+    std::cout << "Recursivo " << recursive_fib_count << std::endl;
 
-  // std::cout << FibIter(5) << std::endl;
+    std::cout << "Iterativo " << iterative_fib_count << std::endl;
+
+    recursive_fib_count = iterative_fib_count = 0;
+  }
 
   return 0;
 }

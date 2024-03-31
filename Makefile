@@ -4,8 +4,8 @@ SRC = src
 OBJ = obj
 INC = include
 BIN = bin
-HDRS = $(INC)/set_generator.h
-OBJS = $(OBJ)/main.o $(OBJ)/set_generator.o
+HDRS = $(INC)/quicksort.h $(INC)/statistics.h
+OBJS = $(OBJ)/main.o $(OBJ)/quicksort.o $(OBJ)/statistics.o
 CFLAGS = -Wall -g -c -I$(INC) -std=c++11
 EXE = $(BIN)/main.out
 
